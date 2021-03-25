@@ -2,6 +2,11 @@
 
 A new Flutter application.
 
+2
+
+
+i recently started learning flutter. I was working on the 'package:english_words/english_words.dart' package. I have successfully imported it by modifying the pubspec.yaml file by adding 'english_words: ^3.1.0 inside dependencies and on the main.dart file
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
