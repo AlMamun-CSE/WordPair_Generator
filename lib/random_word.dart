@@ -12,10 +12,18 @@ class _RandomWordState extends State<RandomWord> {
 
   Widget _buildList() {
     return ListView.builder(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         itemBuilder: (BuildContext context, int item) {
           if (item.isOdd) return Divider();
           final index = item ~/ 2;
+          // Fluttertoast.showToast(
+          //     msg: item.toString(),
+          //     toastLength: Toast.LENGTH_SHORT,
+          //     timeInSecForIosWeb: 1,
+          //     backgroundColor: Colors.red,
+          //     textColor: Colors.white,
+          //     fontSize: 16.0
+          // );
           if (index >= _randomWordPairs.length) {
             _randomWordPairs.addAll(generateWordPairs().take(10));
           }
@@ -34,14 +42,31 @@ class _RandomWordState extends State<RandomWord> {
           color: _alreadySaved ? Colors.red : null),
       onTap: () {
         setState(() {
-          if(_alreadySaved){
+          if (_alreadySaved) {
             _savedWordPairs.remove(pair);
-          }else{
+          } else {
             _savedWordPairs.add(pair);
           }
         });
       },
     );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      final Iterable<ListTile> tiles = _savedWordPairs.map((WordPair pair) {
+        return ListTile(
+            title: Text(pair.asPascalCase, style: TextStyle(fontSize: 16.0)));
+      });
+
+      final List<Widget> divided =
+      ListTile.divideTiles(context: context, tiles: tiles).toList();
+
+      return Scaffold(
+          appBar: AppBar(title: Text('Saved WordPairs')),
+          body: ListView(children: divided));
+    }));
   }
 
   @override
@@ -51,6 +76,9 @@ class _RandomWordState extends State<RandomWord> {
       appBar: AppBar(
         title: Text("WordPair Generator"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
+        ],
       ),
       body: _buildList(),
     ));
